@@ -1,0 +1,677 @@
+# Voice Name,Bank Select MSB,Bank Select LSB,MIDI Program Change#
+Grand Piano,0,112,1
+Bright Piano,0,112,2
+Harpsichord,0,112,7
+Honky Tonk Piano,0,112,4
+MIDI Grand Piano,0,112,3
+CP80,0,113,3
+Cool! Galaxy Electric Piano,0,114,5
+Hyper Tines,0,113,6
+Funky Electric Piano,0,112,5
+DX Modern Electric Piano,0,112,6
+Venus Electric Piano,0,114,6
+Clavi,0,112,8
+Cool! Organ,0,118,19
+Cool! Rotor Organ,0,117,19
+Jazz Organ 1,0,112,17
+Jazz Organ 2,0,113,17
+Rock Organ,0,112,19
+Purple Organ,0,114,19
+Click Organ,0,112,18
+Bright Organ,0,116,17
+Theater Organ,0,127,19
+16'+2' Organ,0,121,20
+16'+4' Organ,0,120,20
+Chapel Organ,0,113,20
+Pipe Organ,0,112,20
+Reed Organ,0,112,21
+Musette Accordion,0,112,22
+Traditional Accordion,0,113,22
+Bandoneon,0,113,24
+Sweet! Harmonica,0,112,23
+Modern Harp,0,113,23
+Harmonica,0,115,23
+Dynamic Nylon Guitar,0,116,25
+Dynamic Overdriven,0,118,30
+Classical Guitar,0,112,25
+Folk Guitar,0,112,26
+Jazz Guitar,0,112,27
+60s Clean Guitar,0,117,28
+12Strings Guitar,0,113,26
+Clean Guitar,0,112,28
+Octave Guitar,0,113,27
+Muted Guitar,0,112,29
+Overdriven Guitar,0,112,30
+Distortion Guitar,0,112,31
+Dynamic Electric Bass,0,116,34
+Finger Bass,0,112,34
+Acoustic Bass,0,112,33
+Pick Bass,0,112,35
+Fretless Bass,0,112,36
+Slap Bass,0,112,37
+Multi Saw Bass,104,20,88
+Deep Sub,104,18,88
+DX100 Bass,0,118,40
+Ramp Bass,0,119,40
+Dark Core Bass,0,120,40
+Fat Lo Bass,0,119,39
+Bleep Bass,0,122,40
+Funk Bass,0,121,40
+Synth Bass,0,112,39
+Dance Bass,0,113,40
+Strings,0,112,49
+Chamber Strings,0,112,50
+Marcato Strings,0,115,50
+Slow Strings,0,113,50
+Tremolo Strings,0,112,45
+Synth Strings,0,112,51
+Pizzicato Strings,0,112,46
+Violin,0,112,41
+Cello,0,112,43
+Contrabass,0,112,44
+Harp,0,112,47
+Orchestra Hit,0,112,56
+Choir,0,112,53
+Vocal Ensemble,0,113,53
+Air Choir,0,112,55
+Vox Humana,0,112,54
+Sweet! Tenor Sax,0,117,67
+Sweet! Soprano Sax,0,113,65
+Sax Ensemble,0,116,66
+Tenor Sax,0,112,67
+Alto Sax,0,112,66
+Soprano Sax,0,112,65
+Baritone Sax,0,112,68
+Breathy Tenor Sax,0,114,67
+Clarinet,0,112,72
+Oboe,0,112,69
+English Horn,0,112,70
+Bassoon,0,112,71
+WoodWind Section,0,116,72
+Sweet! Trumpet,0,115,57
+Sweet! Trombone,0,117,58
+Trumpet,0,112,57
+Trombone,0,112,58
+Trombone Section,0,113,58
+Muted Trumpet,0,112,60
+French Horn,0,112,61
+Tuba,0,112,59
+Brass Section,0,112,62
+Big Band Brass,0,113,62
+Octave Brass,0,116,62
+Brass Hit,0,113,56
+80s Brass,0,113,63
+Mellow Horns,0,119,62
+Funky Brass,0,115,63
+Techno Brass,0,114,63
+Synth Brass,0,112,63
+Sweet! Flute,0,114,74
+Sweet! Classical Flute,0,115,74
+Sweet! Pan Flute,0,113,76
+Flute,0,112,74
+Piccolo,0,112,73
+Pan Flute,0,112,76
+Recorder,0,112,75
+Ocarina,0,112,80
+Gemini,104,20,91
+Hands Up!,104,21,91
+RS Saw Lead 1,0,104,82
+RS Saw Lead 2,0,106,82
+RS Dist Lead,0,114,84
+RS Dual Square,0,127,81
+RS Ramp Lead,0,107,82
+RS Tech Saw,0,108,82
+RS Quack Lead,0,119,85
+RS Dual Saw,0,109,82
+RS Sync 1,0,105,82
+RS Sync 2,0,119,88
+Bright Decay,104,5,85
+Square Lead,0,112,81
+Sawtooth Lead,0,112,82
+Under Heim,0,112,88
+Portatone,0,112,85
+Analogon,0,115,82
+Fargo,0,119,82
+Voice Lead,0,112,86
+Funky Lead,0,121,82
+Noise,0,120,123
+Punchy Chordz,104,24,91
+RS Analog Pad,0,126,90
+RS Synth Pad,0,123,90
+RS Warm Pad,0,113,92
+RS Short Resonance,0,116,91
+RS Noise Pad,0,124,90
+RS Tekno Man,0,125,90
+Sweet Heaven,0,118,89
+Dream Heaven,0,121,89
+Symbiont,0,113,89
+Star Dust,0,112,99
+Xenon Pad,0,112,92
+Equinox,0,112,95
+Fantasia,0,112,89
+Dark Moon,0,113,90
+Brightness,0,112,101
+Bell Pad,0,113,101
+Vibraphone,0,112,12
+Marimba,0,112,13
+Xylophone,0,112,14
+Steel Drums,0,112,115
+Celesta,0,112,9
+Music Box,0,112,11
+Tubular Bells,0,112,15
+Timpani,0,112,48
+Banjo,0,112,106
+Fiddle,0,0,111
+Trompeta Banda,0,124,57
+Trombon Banda,0,119,58
+Bagpipe,0,0,110
+Dulcimer 1,0,0,16
+Dulcimer 2,0,35,16
+Cimbalom,0,96,16
+Tambra,0,96,105
+Santur,0,97,16
+Kanoon,0,97,108
+Oud,0,98,106
+Rabab,0,96,106
+Kalimba,0,0,109
+Harmonium 1 (Single Reed),0,113,21
+Harmonium 2 (Double Reed),0,114,21
+Harmonium 3 (Triple Reed),0,115,21
+Tanpura,0,114,105
+Sitar 1,0,0,105
+Detuned Sitar,0,32,105
+Sitar 2,0,35,105
+Shehnai,0,0,112
+Pungi,0,96,112
+Gopichant,0,97,106
+Tabla,0,116,117
+Er Hu,0,115,111
+Di Zi,0,117,74
+Pi Pa,0,116,106
+Gu Zheng,0,113,108
+Yang Qin,0,40,47
+Morin Khuur,0,120,111
+Shamisen,0,0,107
+Koto,0,0,108
+Hichiriki,0,97,112
+Power Kit,127,0,88
+Standard Kit 1,127,0,1
+Standard Kit 2,127,0,2
+Room Kit,127,0,9
+Rock Kit,127,0,17
+Electronic Kit,127,0,25
+House Kit,127,0,65
+T8 Kit,127,0,59
+T9 Kit,127,0,60
+Analog Kit,127,0,26
+Dance Kit,127,0,113
+Jazz Kit,127,0,33
+Brush Kit,127,0,41
+Symphony Kit,127,0,49
+SFX Kit 1,126,0,1
+SFX Kit 2,126,0,2
+Bass Drum Kit,126,0,21
+Reverse Bass Drum Kit,126,0,22
+China Kit 1,126,0,125
+China Kit 2,127,0,127
+Indian Kit 1,126,0,40
+Indian Kit 2,126,0,115
+Arabic Kit,126,0,37
+Cuban Kit,126,0,41
+XGlite Grand Piano,0,0,1
+XGlite Grand Piano KSP,0,1,1
+XGlite Mellow Grand Piano,0,18,1
+XGlite Piano Strings,0,40,1
+XGlite Dream,0,41,1
+XGlite Bright Piano,0,0,2
+XGlite Bright Piano KSP,0,1,2
+XGlite Electric Grand Piano,0,0,3
+XGlite Electric Grand Piano KSP,0,1,3
+XGlite Detuned CP80,0,32,3
+XGlite Layered CP 1,0,40,3
+XGlite Layered CP 2,0,41,3
+XGlite Honky Tonk Piano,0,0,4
+XGlite Honky Tonk Piano KSP,0,1,4
+XGlite Electric Piano 1,0,0,5
+XGlite Electric Piano 1 KSP,0,1,5
+XGlite Mellow Electric Piano,0,18,5
+XGlite Chorus Electric Piano 1,0,32,5
+XGlite Hard Electric Piano,0,40,5
+XGlite Velocity Crossfade Electric,0,45,5
+XGlite Piano 1,0,45,5
+XGlite 60s Electric Piano,0,64,5
+XGlite Electric Piano 2,0,0,6
+XGlite Electric Piano 2 KSP,0,1,6
+XGlite Chorus Electric Piano 2,0,32,6
+XGlite DX Electric Piano Hard,0,33,6
+XGlite DX Legend Electric Piano,0,34,6
+XGlite DX Phase Electric Piano,0,40,6
+XGlite DX + Analog Electric Piano,0,41,6
+XGlite DX Koto Electric Piano,0,42,6
+XGlite Velocity Crossfade Electric,0,45,6
+XGlite Piano 2,0,45,6
+XGlite Harpsichord 1,0,0,7
+XGlite Harpsichord KSP,0,1,7
+XGlite Harpsichord 2,0,25,7
+XGlite Harpsichord 3,0,35,7
+XGlite Clavi,0,0,8
+XGlite Clavi KSP,0,1,8
+XGlite Clavi Wah,0,27,8
+XGlite Pulse Clavi,0,64,8
+XGlite Pierce Clavi,0,65,8
+XGlite Celesta,0,0,9
+XGlite Glockenspiel,0,0,10
+XGlite Music Box 1,0,0,11
+XGlite Music Box 2,0,64,11
+XGlite Vibraphone,0,0,12
+XGlite Vibraphone KSP,0,1,12
+XGlite Hard Vibraphone,0,45,12
+XGlite Marimba,0,0,13
+XGlite Marimba KSP,0,1,13
+XGlite Sine Marimba,0,64,13
+XGlite Balimba,0,97,13
+XGlite Log Drums,0,98,13
+XGlite Xylophone,0,0,14
+XGlite Tubular Bells,0,0,15
+XGlite Church Bells,0,96,15
+XGlite Carillon,0,97,15
+XGlite Drawbar Organ 1,0,0,17
+XGlite Detuned Drawbar Organ,0,32,17
+XGlite 60s Drawbar Organ 1,0,33,17
+XGlite 60s Drawbar Organ 2,0,34,17
+XGlite 70s Drawbar Organ 1,0,35,17
+XGlite Drawbar Organ 2,0,36,17
+XGlite 60s Drawbar Organ 3,0,37,17
+XGlite Even Bar Organ,0,38,17
+XGlite 16+2'2/3 Organ,0,40,17
+XGlite Organ Bass,0,64,17
+XGlite 70s Drawbar Organ 2,0,65,17
+XGlite Cheezy Organ,0,66,17
+XGlite Drawbar Organ 3,0,67,17
+XGlite Percussive Organ 1,0,0,18
+XGlite 70s Percussive Organ,0,24,18
+XGlite Detuned Percussive Organ,0,32,18
+XGlite Light Organ,0,33,18
+XGlite Percussive Organ 2,0,37,18
+XGlite Rock Organ,0,0,19
+XGlite Rotary Organ,0,64,19
+XGlite Slow Rotary Organ,0,65,19
+XGlite Fast Rotary Organ,0,66,19
+XGlite Church Organ 1,0,0,20
+XGlite Church Organ 3,0,32,20
+XGlite Church Organ 2,0,35,20
+XGlite Notre Dame,0,40,20
+XGlite Organ Flute,0,64,20
+XGlite Tremolo Organ Flute,0,65,20
+XGlite Reed Organ,0,0,21
+XGlite Puff Organ,0,40,21
+XGlite Accordion,0,0,22
+XGlite Accord It,0,32,22
+XGlite Harmonica 1,0,0,23
+XGlite Harmonica 2,0,32,23
+XGlite Tango Accordion 1,0,0,24
+XGlite Tango Accordion 2,0,64,24
+XGlite Nylon Guitar 1,0,0,25
+XGlite Nylon Guitar 2,0,16,25
+XGlite Nylon Guitar 3,0,25,25
+XGlite Velocity Guitar Harmonics,0,43,25
+XGlite Ukulele,0,96,25
+XGlite Steel Guitar 1,0,0,26
+XGlite Steel Guitar 2,0,16,26
+XGlite Nylon & Steel Guitar,0,40,26
+XGlite Steel Guitar with Body Sound,0,41,26
+XGlite Mandolin,0,96,26
+XGlite Jazz Guitar,0,0,27
+XGlite Mellow Guitar,0,18,27
+XGlite Jazz Amp,0,32,27
+XGlite Clean Guitar,0,0,28
+XGlite Chorus Guitar,0,32,28
+XGlite Muted Guitar,0,0,29
+XGlite Funk Guitar 1,0,40,29
+XGlite Muted Steel Guitar,0,41,29
+XGlite Funk Guitar 2,0,43,29
+XGlite Jazz Man,0,45,29
+XGlite Overdriven Guitar,0,0,30
+XGlite Guitar Pinch,0,43,30
+XGlite Distortion Guitar,0,0,31
+XGlite Feedback Guitar 1,0,40,31
+XGlite Feedback Guitar 2,0,41,31
+XGlite Guitar Harmonics 1,0,0,32
+XGlite Guitar Feedback,0,65,32
+XGlite Guitar Harmonics 2,0,66,32
+XGlite Acoustic Bass,0,0,33
+XGlite Jazz Rhythm,0,40,33
+XGlite Velocity Crossfade Upright Bass,0,45,33
+XGlite Finger Bass 1,0,0,34
+XGlite Finger Bass Dark,0,18,34
+XGlite Flange Bass,0,27,34
+XGlite Bass & Distorted Electric Guitar,0,40,34
+XGlite Finger Slap Bass,0,43,34
+XGlite Finger Bass 2,0,45,34
+XGlite Modulated Bass,0,65,34
+XGlite Pick Bass,0,0,35
+XGlite Muted Pick Bass,0,28,35
+XGlite Fretless Bass 1,0,0,36
+XGlite Fretless Bass 2,0,32,36
+XGlite Fretless Bass 3,0,33,36
+XGlite Fretless Bass 4,0,34,36
+XGlite Synth Fretless,0,96,36
+XGlite Smooth Fretless,0,97,36
+XGlite Slap Bass 1,0,0,37
+XGlite Resonant Slap,0,27,37
+XGlite Punch Thumb Bass,0,32,37
+XGlite Slap Bass 2,0,0,38
+XGlite Velocity Switch Slap,0,43,38
+XGlite Synth Bass 1,0,0,39
+XGlite Synth Bass 1 Dark,0,18,39
+XGlite Fast Resonant Bass,0,20,39
+XGlite Acid Bass,0,24,39
+XGlite Clavi Bass,0,35,39
+XGlite Techno Synth Bass,0,40,39
+XGlite Orbiter,0,64,39
+XGlite Square Bass,0,65,39
+XGlite Rubber Bass,0,66,39
+XGlite Hammer,0,96,39
+XGlite Synth Bass 2,0,0,40
+XGlite Mellow Synth Bass,0,6,40
+XGlite Sequenced Bass,0,12,40
+XGlite Click Synth Bass,0,18,40
+XGlite Synth Bass 2 Dark,0,19,40
+XGlite Smooth Synth Bass,0,32,40
+XGlite Modular Synth Bass,0,40,40
+XGlite DX Bass,0,41,40
+XGlite X Wire Bass,0,64,40
+XGlite Violin,0,0,41
+XGlite Slow Violin,0,8,41
+XGlite Viola,0,0,42
+XGlite Cello,0,0,43
+XGlite Contrabass,0,0,44
+XGlite Tremolo Strings,0,0,45
+XGlite Slow Tremolo Strings,0,8,45
+XGlite Suspense Strings,0,40,45
+XGlite Pizzicato Strings,0,0,46
+XGlite Orchestral Harp,0,0,47
+XGlite Timpani,0,0,48
+XGlite Strings 1,0,0,49
+XGlite Stereo Strings,0,3,49
+XGlite Slow Strings,0,8,49
+XGlite Arco Strings,0,24,49
+XGlite 60s Strings,0,35,49
+XGlite Orchestra 1,0,40,49
+XGlite Orchestra 2,0,41,49
+XGlite Tremolo Orchestra,0,42,49
+XGlite Velocity Strings,0,45,49
+XGlite Strings 2,0,0,50
+XGlite Stereo Slow Strings,0,3,50
+XGlite Legato Strings,0,8,50
+XGlite Warm Strings,0,40,50
+XGlite Kingdom,0,41,50
+XGlite 70s Strings,0,64,50
+XGlite Strings 3,0,65,50
+XGlite Synth Strings 1,0,0,51
+XGlite Resonant Strings,0,27,51
+XGlite Synth Strings 4,0,64,51
+XGlite Synth Strings 5,0,65,51
+XGlite Synth Strings 2,0,0,52
+XGlite Choir Aahs 1,0,0,53
+XGlite Stereo Choir,0,3,53
+XGlite Mellow Choir,0,32,53
+XGlite Choir Aahs 2,0,16,53
+XGlite Choir Strings,0,40,53
+XGlite Voice Oohs,0,0,54
+XGlite Synth Voice 1,0,0,55
+XGlite Synth Voice 2,0,40,55
+XGlite Choral,0,41,55
+XGlite Analog Voice,0,64,55
+XGlite Orchestra Hit 1,0,0,56
+XGlite Orchestra Hit 2,0,35,56
+XGlite Impact,0,64,56
+XGlite Trumpet 1,0,0,57
+XGlite Trumpet 2,0,16,57
+XGlite Bright Trumpet,0,17,57
+XGlite Warm Trumpet,0,32,57
+XGlite Trombone 1,0,0,58
+XGlite Trombone 2,0,18,58
+XGlite Tuba 1,0,0,59
+XGlite Tuba 2,0,16,59
+XGlite Muted Trumpet,0,0,60
+XGlite French Horn 1,0,0,61
+XGlite French Horn Solo,0,6,61
+XGlite French Horn 2,0,32,61
+XGlite Horn Orchestra,0,37,61
+XGlite Brass Section 1,0,0,62
+XGlite Trumpet & Trombone Section,0,35,62
+XGlite Brass Section 2,0,40,62
+XGlite High Brass,0,41,62
+XGlite Mellow Brass,0,42,62
+XGlite Synth Brass 1,0,0,63
+XGlite Quack Brass,0,12,63
+XGlite Resonant Synth Brass,0,20,63
+XGlite Poly Brass,0,24,63
+XGlite Synth Brass 3,0,27,63
+XGlite Jump Brass,0,32,63
+XGlite Analog Velocity Brass 1,0,45,63
+XGlite Analog Brass 1,0,64,63
+XGlite Synth Brass 2,0,0,64
+XGlite Soft Brass,0,18,64
+XGlite Synth Brass 4,0,40,64
+XGlite Choir Brass,0,41,64
+XGlite Analog Velocity Brass 2,0,45,64
+XGlite Analog Brass 2,0,64,64
+XGlite Soprano Sax,0,0,65
+XGlite Alto Sax,0,0,66
+XGlite Sax Section,0,40,66
+XGlite Hyper Alto Sax,0,43,66
+XGlite Tenor Sax 1,0,0,67
+XGlite Breathy Tenor Sax,0,40,67
+XGlite Soft Tenor Sax,0,41,67
+XGlite Tenor Sax 2,0,64,67
+XGlite Baritone Sax,0,0,68
+XGlite Oboe,0,0,69
+XGlite English Horn,0,0,70
+XGlite Bassoon,0,0,71
+XGlite Clarinet,0,0,72
+XGlite Piccolo,0,0,73
+XGlite Flute,0,0,74
+XGlite Recorder,0,0,75
+XGlite Pan Flute,0,0,76
+XGlite Blown Bottle,0,0,77
+XGlite Shakuhachi,0,0,78
+XGlite Whistle,0,0,79
+XGlite Ocarina,0,0,80
+XGlite Square Lead 1,0,0,81
+XGlite Square Lead 2,0,6,81
+XGlite LM Square,0,8,81
+XGlite Hollow,0,18,81
+XGlite Shroud,0,19,81
+XGlite Mellow,0,64,81
+XGlite Solo Sine,0,65,81
+XGlite Sine Lead,0,66,81
+XGlite Sawtooth Lead 1,0,0,82
+XGlite Sawtooth Lead 2,0,6,82
+XGlite Thick Sawtooth,0,8,82
+XGlite Dynamic Sawtooth,0,18,82
+XGlite Digital Sawtooth,0,19,82
+XGlite Big Lead,0,20,82
+XGlite Heavy Synth,0,24,82
+XGlite Waspy Synth,0,25,82
+XGlite Pulse Sawtooth,0,40,82
+XGlite Dr. Lead,0,41,82
+XGlite Velocity Lead,0,45,82
+XGlite Sequenced Analog,0,96,82
+XGlite Calliope Lead,0,0,83
+XGlite Pure Lead,0,65,83
+XGlite Chiff Lead,0,0,84
+XGlite Rubby,0,64,84
+XGlite Charang Lead,0,0,85
+XGlite Distorted Lead,0,64,85
+XGlite Wire Lead,0,65,85
+XGlite Voice Lead,0,0,86
+XGlite Synth Aahs,0,24,86
+XGlite Vox Lead,0,64,86
+XGlite Fifths Lead,0,0,87
+XGlite Big Five,0,35,87
+XGlite Bass & Lead,0,0,88
+XGlite Big & Low,0,16,88
+XGlite Fat & Perky,0,64,88
+XGlite Soft Whirl,0,65,88
+XGlite New Age Pad,0,0,89
+XGlite Fantasy,0,64,89
+XGlite Warm Pad,0,0,90
+XGlite Thick Pad,0,16,90
+XGlite Soft Pad,0,17,90
+XGlite Sine Pad,0,18,90
+XGlite Horn Pad,0,64,90
+XGlite Rotary Strings,0,65,90
+XGlite Poly Synth Pad,0,0,91
+XGlite Poly Pad 80,0,64,91
+XGlite Click Pad,0,65,91
+XGlite Analog Pad,0,66,91
+XGlite Square Pad,0,67,91
+XGlite Choir Pad,0,0,92
+XGlite Heaven,0,64,92
+XGlite Itopia,0,66,92
+XGlite CC Pad,0,67,92
+XGlite Bowed Pad,0,0,93
+XGlite Glacier,0,64,93
+XGlite Glass Pad,0,65,93
+XGlite Metallic Pad,0,0,94
+XGlite Tine Pad,0,64,94
+XGlite Pan Pad,0,65,94
+XGlite Halo Pad,0,0,95
+XGlite Sweep Pad,0,0,96
+XGlite Shwimmer,0,20,96
+XGlite Converge,0,27,96
+XGlite Polar Pad,0,64,96
+XGlite Celestial,0,66,96
+XGlite Rain,0,0,97
+XGlite Clavi Pad,0,45,97
+XGlite Harmo Rain,0,64,97
+XGlite African Wind,0,65,97
+XGlite Carib,0,66,97
+XGlite Sound Track,0,0,98
+XGlite Prologue,0,27,98
+XGlite Ancestral,0,64,98
+XGlite Crystal,0,0,99
+XGlite Synth Drum Comp,0,12,99
+XGlite Popcorn,0,14,99
+XGlite Tiny Bells,0,18,99
+XGlite Round Glockenspiel,0,35,99
+XGlite Glockenspiel Chimes,0,40,99
+XGlite Clear Bells,0,41,99
+XGlite Chorus Bells,0,42,99
+XGlite Synth Mallet,0,64,99
+XGlite Soft Crystal,0,65,99
+XGlite Loud Glockenspiel,0,66,99
+XGlite Christmas Bells,0,67,99
+XGlite Vibraphone Bells,0,68,99
+XGlite Digital Bells,0,69,99
+XGlite Air Bells,0,70,99
+XGlite Bell Harp,0,71,99
+XGlite Gamelimba,0,72,99
+XGlite Atmosphere,0,0,100
+XGlite Warm Atmosphere,0,18,100
+XGlite Hollow Release,0,19,100
+XGlite Nylon Electric Piano,0,40,100
+XGlite Nylon Harp,0,64,100
+XGlite Harp Vox,0,65,100
+XGlite Atmosphere Pad,0,66,100
+XGlite Planet,0,67,100
+XGlite Brightness,0,0,101
+XGlite Fantasy Bells,0,64,101
+XGlite Smokey,0,96,101
+XGlite Goblins,0,0,102
+XGlite Goblins Synth,0,64,102
+XGlite Creeper,0,65,102
+XGlite Ring Pad,0,66,102
+XGlite Ritual,0,67,102
+XGlite To Heaven,0,68,102
+XGlite Night,0,70,102
+XGlite Glisten,0,71,102
+XGlite Bell Choir,0,96,102
+XGlite Echoes 1,0,0,103
+XGlite Echoes 2,0,8,103
+XGlite Echo Pan,0,14,103
+XGlite Echo Bells,0,64,103
+XGlite Big Pan,0,65,103
+XGlite Synth Piano,0,66,103
+XGlite Creation,0,67,103
+XGlite Star Dust,0,68,103
+XGlite Resonant & Panning,0,69,103
+XGlite Starz,0,64,104
+XGlite Banjo,0,0,106
+XGlite Muted Banjo,0,28,106
+XGlite Shanai,0,64,112
+XGlite Tamboura,0,97,105
+XGlite Tinkle Bell,0,0,113
+XGlite Bonang,0,96,113
+XGlite Altair,0,97,113
+XGlite Gamelan Gongs,0,98,113
+XGlite Stereo Gamelan Gongs,0,99,113
+XGlite Rama Cymbal,0,100,113
+XGlite Asian Bells,0,101,113
+XGlite Agogo,0,0,114
+XGlite Steel Drums,0,0,115
+XGlite Glass Percussion,0,97,115
+XGlite Thai Bells,0,98,115
+XGlite Woodblock,0,0,116
+XGlite Castanets,0,96,116
+XGlite Taiko Drum,0,0,117
+XGlite Gran Cassa,0,96,117
+XGlite Melodic Tom 1,0,0,118
+XGlite Melodic Tom 2,0,64,118
+XGlite Real Tom,0,65,118
+XGlite Rock Tom,0,66,118
+XGlite Synth Drum,0,0,119
+XGlite Analog Tom,0,64,119
+XGlite Electronic Percussion,0,65,119
+XGlite Reverse Cymbal,0,0,120
+XGlite Fret Noise,0,0,121
+XGlite Breath Noise,0,0,122
+XGlite Seashore,0,0,123
+XGlite Bird Tweet 1,0,0,124
+XGlite Telephone Ring 1,0,0,125
+XGlite Helicopter,0,0,126
+XGlite Applause,0,0,127
+XGlite Gunshot,0,0,128
+XGlite Cutting Noise 1,64,0,1
+XGlite Cutting Noise 2,64,0,2
+XGlite String Slap,64,0,4
+XGlite Flute Key Click,64,0,17
+XGlite Shower,64,0,33
+XGlite Thunder,64,0,34
+XGlite Wind,64,0,35
+XGlite Stream,64,0,36
+XGlite Bubble,64,0,37
+XGlite Feed,64,0,38
+XGlite Dog,64,0,49
+XGlite Horse,64,0,50
+XGlite Bird Tweet 2,64,0,51
+XGlite Maou,64,0,56
+XGlite Phone Call,64,0,65
+XGlite Door Squeak,64,0,66
+XGlite Door Slam,64,0,67
+XGlite Scratch Cut,64,0,68
+XGlite Scratch Split,64,0,69
+XGlite Wind Chime,64,0,70
+XGlite Telephone Ring 2,64,0,71
+XGlite Car Engine Ignition,64,0,81
+XGlite Car Tires Squeal,64,0,82
+XGlite Car Passing,64,0,83
+XGlite Car Crash,64,0,84
+XGlite Siren,64,0,85
+XGlite Train,64,0,86
+XGlite Jet Plane,64,0,87
+XGlite Starship,64,0,88
+XGlite Burst,64,0,89
+XGlite Roller Coaster,64,0,90
+XGlite Submarine,64,0,91
+XGlite Laugh,64,0,97
+XGlite Scream,64,0,98
+XGlite Punch,64,0,99
+XGlite Heartbeat,64,0,100
+XGlite Footsteps,64,0,101
+XGlite Machine Gun,64,0,113
+XGlite Laser Gun,64,0,114
+XGlite Explosion,64,0,115
+XGlite Firework,64,0,116

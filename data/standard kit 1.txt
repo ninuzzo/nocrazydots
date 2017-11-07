@@ -1,0 +1,73 @@
+#Effect Name,Effect Acronym, MIDI Note#
+Surdo Mute,sum,13
+Surdo Open,suo,14
+Hi Q,hq,15
+Whip Slap,ws,16
+Scratch Push,sps,17
+Scratch Pull,spl,18
+Finger Snap,fs,19
+Click Noise,cn,20
+Metronome Click,mc,21
+Metronome Bell,mb,22
+Seq Click L,scl,23
+Seq Click H,sch,24
+Brush Tap,bta,25
+Brush Swirl,bsw,26
+Brush Slap,bsl,27
+Brush Tap Swirl,bts,28
+Snare Roll,sr,29
+Castanet,c,30
+Snare H Soft,shs,31
+Sticks,s,32
+Bass Drum Soft,bds,33
+Open Rim Shot,ors,34
+Bass Drum Hard,bdh,35
+Bass Drum,bd,36
+Side Stick,ss,37
+Snare M,sm,38
+Hand Clap,hc,39
+Snare H Hard,shh,40
+Floor Tom L,ftl,41
+Hi-Hat Closed,hhc,42
+Floor Tom H,fth,43
+Hi-Hat Pedal,hhp,44
+Low Tom,lt,45
+Hi-Hat Open,hho,46
+Mid Tom L,mtl,47
+Mid Tom H,mth,48
+Crash Cymbal 1,1cc,49
+High Tom,ht,50
+Ride Cymbal 1,1rc,51
+Chinese Cymbal,cc,52
+Ride Cymbal Cup,rcc,53
+Tambourine,t,54
+Splash Cymbal,sc,55
+Cowbell,cb,56
+Crash Cymbal 2,2cc,57
+Vibraslap,v,58
+Ride Cymbal 2,2rc,59
+Bongo H,bh,60
+Bongo L,bl,61
+Conga H Mute,chm,62
+Conga H Open,cho,63
+Conga L,cl,64
+Timbale H,th,65
+Timbale L,tl,66
+Agogo H,ah,67
+Agogo L,al,68
+Cabasa,ca,69
+Maracas,m,70
+Samba Whistle H,swh,71
+Samba Whistle L,swl,72
+Guiro Short,gs,73
+Guiro Long,gl,74
+Claves,cv,75
+Wood Block H,wbh,76
+Wood Block L,wbl,77
+Cuica Mute,cm,78
+Cuica Open,co,79
+Triangle Mute,tm,80
+Triangle Open,to,81
+Shaker,sh,82
+Jingle Bells,jb,83
+Bell Tree,btr,84

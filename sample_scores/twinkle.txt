@@ -1,0 +1,17 @@
+Twinkle Twinkle Little Star
+popular English lullaby
+
+Compare this with the traditional score here to learn how to use NoCrazyDots
+https://en.wikipedia.org/wiki/Twinkle,_Twinkle,_Little_Star#/media/File:Twinkle_Twinkle_Little_Star.png
+
+
+| bpm 100 | XGLite Flute 1 60 |
+
+|1 f| 5do/4 do   so   so   | la   la   so/2      | fa/4 fa   mi   mi   | re   re   do/2      |
+      Twin- kle, twin-kle,   lit- tle  star,       how  I    won- der    what you  are!
+
+|1 f| 5so/4 so   fa   fa   | mi   mi   re/2      | so/4 so   fa   fa   | mi   mi   re/2      |
+      Up    a-   bove the   world so   high,       like a    dia- mond   in   the  sky.
+
+|1 f| 5do/4 do   so   so   | la   la   so/2      | fa/4 fa   mi   mi   | re   re   do/2      |
+      Twin- kle, twin-kle,   lit- tle  star,       how  I    won- der    what you  are!
