@@ -265,7 +265,7 @@ void parse_note(FILE *fp) {
       } else if (STREQ2(id, li, te)) {
         note_no = 10;
         is_note = true;
-      } else if (STREQ(id, ti)) {
+      } else if (STREQ2(id, ti, de)) {
         note_no = 11;                            
         is_note = true;
       }
