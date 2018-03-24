@@ -36,33 +36,6 @@ $ su -c 'make install'
 
 to install it for use outside of the building directory or multi-user use.
 
-Although not mandatory, it is recommended you run NoCrazyDots as a
-user with access to higher ulimits, in order to reduce latency. If you
-see a warning like this:
-
-nocrazydots: warning: cannot gain realtime privileges. See README.md
-
-you should take action. In most Linux distro it suffices to add your
-user to in a group with the highest rtprio rlimit. You can find it out
-whether such a group exists with this command:
-
-```bash
-$ grep -ri rtprio /etc/security
-/etc/security/limits.d/99-audio.conf:@audio 	- rtprio 	99
-/etc/security/limits.conf:#        - rtprio - max realtime priority
-```
-
-e.g. in this case you see the name of the group is audio. Else it must
-be created and defined similarly, e.g. directly in /etc/security/limits.conf
-
-You can add your user to this group with this command:
-
-```bash
-$ sudo gpasswd -a YOUR_USERNAME GROUP
-```
-
-Then logout of your user and login again to make this effective, or
-just reboot and try to run nocrazydots again.
 
 ## USAGE
 
@@ -95,6 +68,7 @@ piece of a larger score you copy and paste and/or for testing/learning purposes.
 
 Reading and writing NoCrazyDots scores is simpler than the traditional notation.
 Just look at the sample_scores dir and you will understand anything by yourself.
+
 
 ## TROUBLESHOOTING
 
@@ -140,3 +114,32 @@ card 3: Keyboard [Digital Keyboard], device 0: USB Audio [USB Audio]
 
 E.g. in my case the device name is hw:3,0,0 This is the parameter to
 be passed to NoCrazyDots.
+
+Although not mandatory, it is recommended you run NoCrazyDots as a
+user with access to higher ulimits, in order to reduce latency. If you
+see a warning like this:
+
+nocrazydots: warning: cannot gain realtime privileges. See README.md
+
+you should take action. In most Linux distro it suffices to add your
+user to in a group with the highest rtprio rlimit. You can find it out
+whether such a group exists with this command:
+
+```bash
+$ grep -ri rtprio /etc/security
+/etc/security/limits.d/99-audio.conf:@audio 	- rtprio 	99
+/etc/security/limits.conf:#        - rtprio - max realtime priority
+```
+
+e.g. in this case you see the name of the group is audio. Else it must
+be created and defined similarly, e.g. directly in /etc/security/limits.conf
+
+You can add your user to this group with this command:
+
+```bash
+$ sudo gpasswd -a YOUR_USERNAME GROUP
+```
+
+Then logout of your user and login again to make this effective, or
+just reboot and try to run nocrazydots again.
+
