@@ -33,7 +33,7 @@ clean:
 
 install: $(TARGET)
 	$(INSTALL) $(TARGET) $(BINDIR)
-	$(INSTALLDATA) -D README.txt $(DATADIR)/$(TARGET)/README.txt
+	$(INSTALLDATA) -D README.md $(DATADIR)/$(TARGET)/README.md
 	$(INSTALL) -d $(DATADIR)/$(TARGET)/{data,sample_scores}/
 	$(INSTALLDATA) sample_scores/* $(DATADIR)/$(TARGET)/sample_scores/
 	$(INSTALLDATA) data/* $(DATADIR)/$(TARGET)/data/
