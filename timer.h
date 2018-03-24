@@ -9,7 +9,8 @@
 struct timeval ncd_timer_start = (struct timeval){0},
   ncd_timer_stop = (struct timeval){0};
 
-#define LATENCY_WARN_THRESHOLD -10 // In us
+// 5ms latency is the smallest a human being can detect
+#define LATENCY_WARN_THRESHOLD -2000 // In us
 
 #define MICROSEC(s) (s.tv_sec * 1000000 + s.tv_usec)
 #define STOPWATCH_RESET() (ncd_timer_start = ncd_timer_stop = (struct timeval){0})
