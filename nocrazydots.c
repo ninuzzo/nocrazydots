@@ -4,7 +4,8 @@
    without crazy dots.
    Supports automated playing and auto-accompainment.
 
-   (c) 2017 Antonio Bonifati aka Farmboy <http://farmboy.tk>
+   (c) 2017-2018 Antonio Bonifati aka Farmboy
+   <http://farmboymusicblog.wordpress.com>>
 
    This file is part of NoCrazyDots.
 
@@ -28,6 +29,8 @@
 #include <string.h>
 #include <libgen.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <sched.h>
 #include "parser.h"
 #include "midi.h"
 #include "queue.h"
@@ -40,8 +43,9 @@ int main(int argc, char *argv[]) {
     last;
   FILE *fp = stdin;
   bool dump_mode = false;
+  struct sched_param sp;
 
-  printf("NoCrazyDots %.1f (c) 2017 Antonio Bonifati \"Farmboy\" under GNU GPL3\n",
+  printf("NoCrazyDots %.1f (c) 2017-2018 Antonio Bonifati \"Farmboy\" under GNU GPL3\n",
     VERSION);
 
   // Argument parsing without option-switches. Ambiguous, but in rare cases...
@@ -65,46 +69,15 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  // Try to run in real-time context to reduce latency.
+  sp.sched_priority = 99;
+  if (sched_setscheduler(getpid(), SCHED_FIFO, &sp) == -1) {
+    warning(0, "warning: cannot gain realtime privileges. See README.md");
+  }
+
   srand(time(NULL)); // for unpredictable random numbers
   ncd_midi_init();
   ncd_midi_load_voices(datadir);
-
-/*
-  
-  {
-    int i;
-    for (i = 0; i < 16; i++)
-      ncd_midi_expression(63, i);
-  }
-
-  ncd_midi_noteon(60, 127, 0);
-  usleep(4000000);
-  ncd_midi_noteoff(60, 0);
-
-  usleep(4000000);
-  
-  ncd_midi_expression(127, 0);
-  ncd_midi_noteon(60, 127, 0);
-  usleep(1000000);
-  ncd_midi_noteoff(60, 0);  
-
-  usleep(4000000);
-
-  ncd_midi_set_voice("XGlite Slow Violin", 0, 100, false);
-
-  {
-      int i;
-      ncd_midi_noteon(60, 127, 0);
-
-      for (i = 0; i < 128; i++) {
-        usleep(4000000/128);
-        ncd_midi_volume(127 - i, 0);
-        //ncd_midi_expression(63 - i/2, 0);
-      }
-      ncd_midi_noteoff(60, 0);
-
-  }
-*/
   
   if (dump_mode) {
     ncd_midi_dump();

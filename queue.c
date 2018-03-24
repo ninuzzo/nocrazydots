@@ -4,7 +4,8 @@
    without crazy dots.
    Supports automated playing and auto-accompainment.
 
-   (c) 2017 Antonio Bonifati aka Farmboy <http://farmboy.tk>
+   (c) 2017-2018 Antonio Bonifati aka Farmboy
+   <http://farmboymusicblog.wordpress.com>>
 
    This file is part of NoCrazyDots.
 
@@ -377,7 +378,7 @@ void ncd_play() {
           if (fabsf(ncd_expression[channel].volume_step) > fabsf(volume_delta)) {
             ncd_expression[channel].volume_step = volume_delta;
             warning(ncd_parser_line_no,
-              "Warning: expression hairpin does not apply: duration too short\n");
+              "warning: expression hairpin does not apply: duration too short\n");
           }
       } else {
         status = msg[MIDI_STATUS] & 0xF0;
