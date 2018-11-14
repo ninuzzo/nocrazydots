@@ -278,7 +278,7 @@ void ncd_play() {
   ncd_midi_event msg;
   float prev_start_time = 0, conv_unit = BPM2US(DEFBPM),
     final_volume, volume_delta, curr_volume, internote_delay,
-    new_curr_volume, delay_rest = 0;
+    new_curr_volume;
   unsigned char status, channel, i;
   
   STOPWATCH_START();
@@ -286,10 +286,9 @@ void ncd_play() {
   for (node = queue.start; node; node = node->next) {
     internote_delay = (node->start_time - prev_start_time) * conv_unit;
  
-    while (internote_delay + delay_rest >= EXPR_STEP) {
-      CHRONOSLEEP(EXPR_STEP - delay_rest);
-      internote_delay -= EXPR_STEP - delay_rest;
-      delay_rest = 0;
+    while (internote_delay >= EXPR_STEP) {
+      CHRONOSLEEP(EXPR_STEP);
+      internote_delay -= EXPR_STEP;
 
       for (channel = 0; channel < MIDI_CHANNELS; channel++) {
         if (ncd_expression[channel].left_duration) {
@@ -313,15 +312,7 @@ void ncd_play() {
         }
       }
     }
-    // auto-correct most of the delay (latency due to computation
-    // between notes) by shortening the next note :-)
     CHRONOSLEEP(internote_delay);
-    delay_rest += internote_delay;
-    if (delay_rest > EXPR_STEP) {
-      printf("ERRORE");
-      ncd_midi_all_notes_off();
-      exit(1);
-    }
 
     for (i = 0; i < node->events_len; i++) {
       memcpy(msg, node->events[i].msg, sizeof(ncd_midi_event));
@@ -392,7 +383,7 @@ void ncd_play() {
         NCD_MIDI_EVENT(msg);
       }
     }
-	prev_start_time = node->start_time;
+    prev_start_time = node->start_time;
   }
 }
 
