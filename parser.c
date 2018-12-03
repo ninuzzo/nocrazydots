@@ -117,6 +117,10 @@
 }
 
 #define PUSHNOTE() { \
+  if (stored_slide) { \
+    stored_slide = false; \
+    ncd_slide(semitones, channel, duration); \
+  } \
   /* push the previous note or tied notes as one */ \
   ncd_queue_push_event(note); \
   /* push the respective noteoff event */ \
@@ -153,10 +157,12 @@ static unsigned char channel,
   start_note = DEFNOTE; // current start note for relative pitch notation
 static bool tie, // whether the next note is tied to the previous
   slide, // whether the current note is a slide
+  stored_slide, // whether the stored note is a slide
   note_stored; // is there a note stored in note?
 static ncd_event note;
 static int octave = DEFOCTAVE; // current octave
 static float duration = DEFDURATION; // current duration
+signed char semitones; // distance between two notes in a slide
 
 int ncd_parser_line_no;
 
@@ -238,7 +244,6 @@ void parse_directives(FILE *fp) {
 
 void parse_note(FILE *fp) {
   unsigned char note_no, midi_note;
-  signed char semitones; // distance between two notes in a slide
   bool is_note, // is it a note or a rest?
     // whether a number or numerator has been read at the beginning of a note/rest token
     num_read,
@@ -296,6 +301,7 @@ void parse_note(FILE *fp) {
         id_read = (no_notes = false); // there is at least one note in the score
 
         if ((slide = (c == SLIDE))) {
+          stored_slide = true;
           ADVANCE();
 
           if (isdigit(c)) {
@@ -438,9 +444,6 @@ void parse_note(FILE *fp) {
       note.duration += duration;
     } else {
       if (note_stored) {
-        if (slide) {
-          ncd_slide(semitones, channel, duration);
-        }
         PUSHNOTE();
       }
 
