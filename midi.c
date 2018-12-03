@@ -5,7 +5,7 @@
    Supports automated playing and auto-accompainment.
 
    (c) 2017-2018 Antonio Bonifati aka Farmboy
-   <http://farmboymusicblog.wordpress.com>>
+   <http://farmboymusicblog.wordpress.com>
 
    This file is part of NoCrazyDots.
 
@@ -48,6 +48,14 @@ http://www.alsa-project.org/alsa-doc/alsa-lib/_2test_2rawmidi_8c-example.html
 
 /* https://en.wikipedia.org/wiki/MIDI_beat_clock */
 #define MIDI_REAL_TIME_CLOCK 0xF8
+/* Active Sensing. This message is intended to be sent repeatedly to
+   tell the receiver that a connection is alive. Use of this message
+   is optional. When initially received, the receiver will expect to
+   receive another Active Sensing message each 300ms (max), and if it
+   does not then it will assume that the connection has been
+   terminated. At termination, the receiver will turn off all voices and
+   return to normal (non- active sensing) operation.
+*/
 #define MIDI_SENSING 0xFE
 #define MIDI_PROGRAM_CHANGE 0xC0
 #define MIDI_ALL_NOTES_OFF 0x7B
@@ -72,8 +80,9 @@ char ncd_midi_port_name[DEVMAXLEN] = "";
 char *midi_drum_name[128];
 
 // float and not unsigned char to compensate rounding errors
-// during crescendo and diminuendo
+// during crescendo and diminuendo or slides
 ncd_volume ncd_expression[MIDI_CHANNELS];
+ncd_pitch ncd_pitch_wheel[MIDI_CHANNELS];
 
 snd_rawmidi_t *midiin = NULL, // structure to access MIDI input
   *midiout = NULL; // structure to access MIDI output
@@ -200,7 +209,7 @@ unsigned char ncd_midi_drum_no(char *effect_acronym) {
     : (unsigned char)(long)(ep->data);
 }
   
-void ncd_midi_set_voice(char *voice, unsigned char channel,
+void ncd_midi_set_voice(const char *voice, unsigned char channel,
   unsigned char volume, bool queue) {
   ENTRY e, *ep;
   struct voice_data *vd;
@@ -284,12 +293,16 @@ void ncd_midi_init(char* portname) {
   signal(SIGINT, INThandler);
 
   for (channel = 0; channel < MIDI_CHANNELS; channel++) {
-    ncd_midi_set_volume(DEFVOLUME, channel);
-    ncd_expression[channel].reference = DEFVOLUME;
+    ncd_midi_set_volume(ncd_expression[channel].reference = DEFVOLUME, channel);
+    ncd_midi_pitch_wheel(ncd_pitch_wheel[channel].current = NOBENDING, channel);
+
+    // TODO: 2 must be changed to 24 to allow more than one tone of pitch bending
+    ncd_pitch_bend_sensitivity(2, channel);
   }
 }
 
-// This implementation handled correctly only the types of messages generated
+// This implementation handles correctly only the types of messages generated
+// Note: the number of bytes returned must include the status byte
 int ncd_midi_event_size(ncd_midi_event e) {
   register unsigned char status = e[MIDI_STATUS];
   if (status == MIDI_META) {
@@ -301,6 +314,7 @@ int ncd_midi_event_size(ncd_midi_event e) {
       case MIDI_NOTEON:
       case MIDI_NOTEOFF:
       case MIDI_CONTROLLER:
+      case MIDI_PITCH_WHEEL:
         return 3;
       break;
       
@@ -310,7 +324,7 @@ int ncd_midi_event_size(ncd_midi_event e) {
     }
   }
 
-  trigger_error(0, "(MIDI) unknown number of args for message status %02x",
+  trigger_error(0, "(MIDI) unknown number of args for message status %02hhx",
     status);
     
   return 0; // should never reach here
@@ -337,12 +351,12 @@ void ncd_midi_noteoff(unsigned char note, unsigned char channel) {
 }
 
 // To be used to set the midi channel volume level
-void ncd_midi_set_volume(float volume, unsigned char channel) {
+void ncd_midi_set_volume(unsigned char volume, unsigned char channel) {
   ncd_midi_event e;
 
   e[MIDI_STATUS] = MIDI_CONTROLLER | channel;
   e[MIDI_DATA1] = MIDI_VOLUME; // Volume level of the instrument
-  e[MIDI_DATA2] = (unsigned char)volume & 0x7F;
+  e[MIDI_DATA2] = volume & 0x7F;
   ncd_expression[channel].current = volume;
   NCD_MIDI_EVENT(e);
 }
@@ -365,12 +379,66 @@ void ncd_midi_expression_fine(unsigned short volume, unsigned char channel) {
   NCD_MIDI_EVENT(e);
 }
 
+// See: https://www.recordingblogs.com/wiki/midi-registered-parameter-number-rpn
+void ncd_midi_start_rpn(unsigned char rpn1, unsigned char rpn2, unsigned char channel) {
+  ncd_midi_event e;
+
+  e[MIDI_STATUS] = MIDI_CONTROLLER | channel;
+  e[MIDI_DATA1] = 0x64; // 100
+  e[MIDI_DATA2] = rpn1;
+
+  NCD_MIDI_EVENT(e);
+
+  // MIDI_STATUS is the same
+  e[MIDI_DATA1] = 0x65; // 101
+  e[MIDI_DATA2] = rpn2;
+
+  NCD_MIDI_EVENT(e);
+}
+
+void ncd_midi_stop_rpn(unsigned char channel) {
+  ncd_midi_start_rpn(0x7F, 0x7F, channel);
+}
+
+void ncd_pitch_bend_sensitivity(unsigned char semitones, unsigned char channel) {
+  ncd_midi_event e;
+
+  // (0,0) is the RPN for pitch bend sensitivity
+  ncd_midi_start_rpn(0x00, 0x00, channel);
+
+  e[MIDI_STATUS] = MIDI_CONTROLLER | channel;
+  e[MIDI_DATA1] = 0x06;
+  e[MIDI_DATA2] = semitones;
+
+  NCD_MIDI_EVENT(e);
+
+  // MIDI_STATUS is the same
+  e[MIDI_DATA1] = 0x26;
+  e[MIDI_DATA2] = 0x00; // cents (fine value, unsupported by this function)
+
+  // Optional but good practice in order
+  // to make sure we get out of controller mode
+  ncd_midi_stop_rpn(channel);
+}
+
 void ncd_midi_expression(unsigned char volume, unsigned char channel) {
   ncd_midi_event e;
 
   e[MIDI_STATUS] = MIDI_CONTROLLER | channel;
   e[MIDI_DATA1] = MIDI_EXPRESSION_MSB; // Volume level of the instrument
   e[MIDI_DATA2] = volume & 0x7F;
+
+  NCD_MIDI_EVENT(e);
+}
+
+// See: http://midi.teragonaudio.com/tech/midispec/wheel.htm
+void ncd_midi_pitch_wheel(unsigned short value, unsigned char channel) {
+  ncd_midi_event e;
+
+  e[MIDI_STATUS] = MIDI_PITCH_WHEEL | channel;
+  e[MIDI_DATA1] = value & 0x7F;
+  e[MIDI_DATA2] = (value >> 7) & 0x7F;
+  ncd_pitch_wheel[channel].current = value;
 
   NCD_MIDI_EVENT(e);
 }

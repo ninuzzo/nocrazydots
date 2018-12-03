@@ -55,6 +55,59 @@
   NEXTC(); \
 }
 
+// this must be called when you are sure c contains an alphanumeric
+#define READID() { \
+  id[i = 0] = c; \
+  NEXTC(); \
+  while (isalpha(c)) { \
+    error_check(++i == MAXIDLEN, ncd_parser_line_no, "Identifier too long"); \
+    id[i] = c; \
+    NEXTC(); \
+  } \
+  id[++i] = '\0'; \
+  SKIPSEP(); \
+}
+
+#define PARSENOTE() { \
+  if (STREQ(id, do)) { /* absolute note names */ \
+    note_no = 0; \
+    is_note = true; \
+  } else if (STREQ2(id, di, ra)) { \
+    note_no = 1; \
+    is_note = true; \
+  } else if (STREQ(id, re)) { \
+    note_no = 2; \
+    is_note = true; \
+  } else if (STREQ2(id, ri, me)) { \
+    note_no = 3; \
+    is_note = true; \
+  } else if (STREQ2(id, mi, fe)) { \
+    note_no = 4; \
+    is_note = true; \
+  } else if (STREQ(id, fa)) { \
+    note_no = 5; \
+    is_note = true; \
+  } else if (STREQ2(id, fi, se)) { \
+    note_no = 6; \
+    is_note = true; \
+  } else if (STREQ2(id, so, sol)) { \
+    note_no = 7; \
+    is_note = true; \
+  } else if (STREQ2(id, si, le)) { \
+    note_no = 8; \
+    is_note = true; \
+  } else if (STREQ(id, la)) { \
+    note_no = 9; \
+    is_note = true; \
+  } else if (STREQ2(id, li, te)) { \
+    note_no = 10; \
+    is_note = true; \
+  } else if (STREQ2(id, ti, de)) { \
+    note_no = 11; \
+    is_note = true; \
+  } \
+}
+
 #define READCHANNEL(channel) { \
   READNUM(hhu, (channel)); \
   error_check(channel > MIDI_CHANNELS, ncd_parser_line_no, \
@@ -85,6 +138,7 @@
 #define CRESCENDO '<'
 #define DIMINUENDO '>'
 #define HAIRPIN_END '='
+#define SLIDE '\\'
 
 const char *midi_note_no_name[12] = {
   "do", "di", "re", "ri", "mi", "fa", "fi", "so", "si", "la", "li", "ti"
@@ -98,6 +152,7 @@ static unsigned char channel,
   velocity = DEFVELOCITY, // current velocity
   start_note = DEFNOTE; // current start note for relative pitch notation
 static bool tie, // whether the next note is tied to the previous
+  slide, // whether the current note is a slide
   note_stored; // is there a note stored in note?
 static ncd_event note;
 static int octave = DEFOCTAVE; // current octave
@@ -152,9 +207,9 @@ void parse_directives(FILE *fp) {
         
         default:
           SKIPBLANKS();
-      if (c == PER) {
-        ADVANCE();
-      }
+          if (c == PER) {
+            ADVANCE();
+          }
           if (isdigit(c)) {
             READNUM(hhu, repeats);
           } else {
@@ -183,6 +238,7 @@ void parse_directives(FILE *fp) {
 
 void parse_note(FILE *fp) {
   unsigned char note_no, midi_note;
+  signed char semitones; // distance between two notes in a slide
   bool is_note, // is it a note or a rest?
     // whether a number or numerator has been read at the beginning of a note/rest token
     num_read,
@@ -211,65 +267,18 @@ void parse_note(FILE *fp) {
   } else {
     num_read = number_separated = false;
   }
-  
-  if (isalpha(c)) {
-    id_read = true;
-    id[i = 0] = c;
-    NEXTC();
-    while (isalpha(c)) {
-      error_check(++i == MAXIDLEN, ncd_parser_line_no, "Identifier too long");
-      id[i] = c;
-      NEXTC();
-    }
-    id[++i] = '\0';
-    SKIPSEP();
-  } else {
-    id_read = false;
+ 
+  if ((id_read = isalpha(c))) {
+    READID();
   }
-  
+
   error_check(!num_read && !id_read && c != '/', ncd_parser_line_no,
     "Unexpected char `%c'", c);
   
   is_note = false; // unless you find a note, it is a rest
   if (id_read) {
     if (channel != DRUMCHANNEL) {
-      if (STREQ(id, do)) { // absolute note names
-        note_no = 0;
-        is_note = true;
-      } else if (STREQ2(id, di, ra)) {
-        note_no = 1;
-        is_note = true;
-      } else if (STREQ(id, re)) {
-        note_no = 2;
-        is_note = true;
-      } else if (STREQ2(id, ri, me)) {
-        note_no = 3;
-        is_note = true;
-      } else if (STREQ2(id, mi, fe)) {
-        note_no = 4;
-        is_note = true;
-      } else if (STREQ(id, fa)) {
-        note_no = 5;
-        is_note = true;
-      } else if (STREQ2(id, fi, se)) {
-        note_no = 6;
-        is_note = true;
-      } else if (STREQ2(id, so, sol)) {
-        note_no = 7;
-        is_note = true;
-      } else if (STREQ2(id, si, le)) {
-        note_no = 8;
-        is_note = true;
-      } else if (STREQ(id, la)) {
-        note_no = 9;
-        is_note = true;
-      } else if (STREQ2(id, li, te)) {
-        note_no = 10;
-        is_note = true;
-      } else if (STREQ2(id, ti, de)) {
-        note_no = 11;                            
-        is_note = true;
-      }
+      PARSENOTE();
       
       if (is_note) {
         if (num_read) {
@@ -285,6 +294,30 @@ void parse_note(FILE *fp) {
         midi_note = start_note = MIDI_NOTE(octave, note_no);
   
         id_read = (no_notes = false); // there is at least one note in the score
+
+        if ((slide = (c == SLIDE))) {
+          ADVANCE();
+
+          if (isdigit(c)) {
+            READNUM(hhd, semitones);
+          } else if (isalpha(c)) {
+            READID();
+            semitones = note_no;
+            is_note = false;
+            PARSENOTE();
+            error_check(!is_note, ncd_parser_line_no, "Slide symbol \\ must be followed by a note name or semitone number");
+            /* TODO: either a feature to change the pitch bend range must be provided
+               or it can be statically set it to the max of one octave (12 semitones).
+               See: http://midi.teragonaudio.com/tech/midispec/wheel.htm */ 
+            error_check(abs(semitones = note_no - semitones) > 2,
+              ncd_parser_line_no, "Currently you cannot slide more than a tone up or down");
+            error_check(!semitones, ncd_parser_line_no,
+              "Sliding to the same note does not make sense");
+          } else {
+            trigger_error(ncd_parser_line_no,
+              "Slide symbol \\ must be followed by a note name or semitone number");
+          }
+        }
       }
     } else if (!num_read || (num>=0 && num<=9 && num == (int)num)) {
       if (num_read) {
@@ -405,9 +438,12 @@ void parse_note(FILE *fp) {
       note.duration += duration;
     } else {
       if (note_stored) {
+        if (slide) {
+          ncd_slide(semitones, channel, duration);
+        }
         PUSHNOTE();
       }
-  
+
       /* Save the current note, but do not push it
          it may be followed by a tie!
          We are sure values are in the correct range
@@ -456,7 +492,7 @@ void parse_score_row(FILE *fp) {
     if ((tie = (c == TIE))) {
       ADVANCE();
     }
-    
+
     if ((hairpin_type = (c == CRESCENDO)) || c == DIMINUENDO) {
       NEXTC();
       READNUM(hhu, percent);

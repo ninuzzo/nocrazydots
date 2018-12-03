@@ -77,15 +77,17 @@ int main(int argc, char *argv[]) {
 
   srand(time(NULL)); // for unpredictable random numbers
   ncd_midi_init();
-  ncd_midi_load_voices(datadir);
   
   if (dump_mode) {
     ncd_midi_dump();
   } else {
+    ncd_midi_load_voices(datadir);
+
     ncd_parse(fp);
     #ifdef DEBUG
     ncd_queue_display();
     #endif
+
     if (tag == ' ') {
       ncd_play();
     } else {

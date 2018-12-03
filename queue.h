@@ -6,6 +6,9 @@
 // Maximum number of sections that can be recorded
 #define MAXSEC 128
 
+// Pitch wheel center value
+#define NOBENDING 0x2000
+
 // Percent to randomize velocities in order to avoid to sound too mechanical
 extern unsigned char ncd_percent_randomness;
 
@@ -13,7 +16,7 @@ extern signed char ncd_trans_semitones;
 
 typedef struct {
   ncd_midi_event msg;
-  char tag; // space for note-unrelated events
+  char tag; // ' ' (space) for note-unrelated events
   float duration; // 0 for note-unrelated events
 } ncd_event;
 
@@ -44,5 +47,6 @@ void ncd_section_play(unsigned char sec_no);
 void ncd_start_hairpin(bool crescendo, unsigned char percent,
   unsigned char channel, float last_note_dur);
 void ncd_stop_hairpin(unsigned char channel, float last_note_dur);
+void ncd_slide(signed char semitones, unsigned char channel, float next_note_dur);
 
 #endif

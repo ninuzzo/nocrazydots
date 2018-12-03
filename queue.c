@@ -38,8 +38,8 @@
 // Default number of beats per minute. Each beat is a quarter note.
 #define DEFBPM 60
 
-// Each expression volume increment/decrement will be done
-// in this time interval (in us)
+// Each expression volume increment/decrement or pitch wheel change
+// will be done in this time interval (in us)
 #define EXPR_STEP 100000 // 100000 us = 0.1s
 
 static struct {
@@ -75,6 +75,7 @@ static ncd_hairpin_table hairpin[MIDI_CHANNELS];
 unsigned char bpm = DEFBPM,
   ncd_percent_randomness = DEFRAND;
 
+// Number of transposition semitones
 signed char ncd_trans_semitones = 0;
 
 // returns a random number x +- ncd_percent_randomness%
@@ -164,7 +165,8 @@ ncd_ev_ref ncd_queue_push_event(ncd_event note) {
   ncd_ev_ref ret;
   ncd_node *curr, *prev, *new;
   unsigned char status = note.msg[MIDI_STATUS] & 0xF0;
-  bool hairpin = status == MIDI_CONTROLLER && note.msg[MIDI_DATA1] == MIDI_EXPRESSION_MSB;
+  bool meta_event = (status == MIDI_CONTROLLER && note.msg[MIDI_DATA1] == MIDI_EXPRESSION_MSB)
+    || status == MIDI_PITCH_WHEEL;
   float start_time = (status == MIDI_NOTEOFF) ?
     current_time + note.duration : current_time;
 
@@ -172,7 +174,7 @@ ncd_ev_ref ncd_queue_push_event(ncd_event note) {
        prev = curr, curr = curr->next) {
     if (EQUALTIMES(curr->start_time, start_time)) {
       add_note(curr, note);
-      if (!hairpin) {
+      if (!meta_event) {
         current_time += note.duration;
       }
       ret.node = curr;
@@ -199,7 +201,7 @@ ncd_ev_ref ncd_queue_push_event(ncd_event note) {
     }
   }
 
-  if (!hairpin) {
+  if (!meta_event) {
     current_time += note.duration;
   }
 
@@ -278,8 +280,9 @@ void ncd_play() {
   ncd_midi_event msg;
   float prev_start_time = 0, conv_unit = BPM2US(DEFBPM),
     final_volume, volume_delta, curr_volume, internote_delay,
-    new_curr_volume;
+    new_curr_value; // for both volume and pitch wheel value
   unsigned char status, channel, i;
+  signed char semitones; // for sliding
   
   STOPWATCH_START();
   error_check(queue.start == NULL, 0, "Playing empty score");
@@ -292,9 +295,9 @@ void ncd_play() {
 
       for (channel = 0; channel < MIDI_CHANNELS; channel++) {
         if (ncd_expression[channel].left_duration) {
-          new_curr_volume = ncd_expression[channel].current + ncd_expression[channel].volume_step;
-          if (new_curr_volume > 127 || new_curr_volume < 0) {
-            // no use to keep increasing volume on this channel
+          new_curr_value = ncd_expression[channel].current + ncd_expression[channel].volume_step;
+          if (new_curr_value > 127 || new_curr_value < 0) {
+            // no use to keep increasing/decreasing volume on this channel
             ncd_expression[channel].left_duration = 0;
             continue;
           }
@@ -305,23 +308,59 @@ void ncd_play() {
 
           // Spare bandwidth... only send a volume change message
           // if the new volume is actually different than the current one
-          if ((int)new_curr_volume != (int)ncd_expression[channel].current) {
-            ncd_midi_set_volume(new_curr_volume, channel);
+          if ((int)new_curr_value != (int)ncd_expression[channel].current) {
+            ncd_midi_set_volume((unsigned char)new_curr_value, channel);
           }
-          ncd_expression[channel].current = new_curr_volume;
+          ncd_expression[channel].current = new_curr_value;
+        }
+
+        // Pitch wheel manipulation for sliding is akin to volume
+        // change for expression
+        if (ncd_pitch_wheel[channel].left_duration) {
+          new_curr_value = ncd_pitch_wheel[channel].current
+            + ncd_pitch_wheel[channel].value_step;
+
+          if (new_curr_value > 0x3FFF || new_curr_value < 0) {
+            // no use to keep increasing/decreasing pitch on this channel
+            ncd_pitch_wheel[channel].left_duration = 0;
+            continue;
+          }
+
+          if ((ncd_expression[channel].left_duration -= EXPR_STEP / conv_unit) < 0) {
+            ncd_expression[channel].left_duration = 0;
+          }
+
+          // Spare bandwidth... only send a pitch wheel change message
+          // if the new pitch is actually different than the current one
+          if ((int)new_curr_value != (int)ncd_pitch_wheel[channel].current) {
+            ncd_midi_pitch_wheel((unsigned short)new_curr_value, channel);
+          }
+          ncd_pitch_wheel[channel].current = new_curr_value;
         }
       }
     }
     CHRONOSLEEP(internote_delay);
 
+    // Reset pitch wheel to center position at the end of bent note
+    // for all channels.
+    for (channel = 0; channel < MIDI_CHANNELS; channel++) {
+      // Spare bandwidth... only send a pitch wheel change message
+      // if the pitch wheel is not already centered
+      if (ncd_pitch_wheel[channel].current != NOBENDING) {
+        ncd_pitch_wheel[channel].current = NOBENDING;
+        ncd_midi_pitch_wheel(NOBENDING, channel);
+      }
+    }
+
     for (i = 0; i < node->events_len; i++) {
       memcpy(msg, node->events[i].msg, sizeof(ncd_midi_event));
+      status = msg[MIDI_STATUS] & 0xF0;
       channel = msg[MIDI_STATUS] & 0x0F;
 
       // Warning: non standard but works
       if (msg[MIDI_STATUS] == MIDI_META && msg[MIDI_DATA1] == MIDI_SET_TEMPO) {
         conv_unit = BPM2US(msg[MIDI_DATA2]);
-      } else if ((msg[MIDI_STATUS] & 0xF0) == MIDI_CONTROLLER
+      } else if (status == MIDI_CONTROLLER
              && msg[MIDI_DATA1] == MIDI_EXPRESSION_MSB) {
           curr_volume = ncd_expression[channel].current;
           if ((msg[MIDI_DATA2] & 0x80)) { // crescendo
@@ -365,21 +404,43 @@ void ncd_play() {
               duration * conv_unit      EXPR_STEP
           */
           ncd_expression[channel].volume_step = EXPR_STEP * volume_delta
-            / ((ncd_expression[channel].left_duration = node->events[i].duration) * conv_unit);
+            / ( (ncd_expression[channel].left_duration = node->events[i].duration)
+                * conv_unit );
           if (fabsf(ncd_expression[channel].volume_step) > fabsf(volume_delta)) {
             ncd_expression[channel].volume_step = volume_delta;
             warning(ncd_parser_line_no,
               "warning: expression hairpin does not apply: duration too short\n");
           }
+      } else if (status == MIDI_PITCH_WHEEL) {
+        // TODO: this code assumes the pitch wheel range is only a tone.
+        // see "Errata" at http://midi.teragonaudio.com/tech/midispec/wheel.htm
+
+        semitones = ncd_pitch_wheel[channel].semitones = msg[MIDI_DATA1];
+        if (abs(semitones) > 2) {
+          warning(ncd_parser_line_no,
+            "warning: sliding more than one tone is currently not supported");
+          semitones = semitones > 0 ? 2 : -2;
+        }
+
+        ncd_pitch_wheel[channel].current = NOBENDING;
+
+        /* From proportion:
+
+            semitones * 0x1000      value_step
+          ---------------------- = ------------
+           duration * conv_unit     EXPR_STEP
+        */
+        ncd_pitch_wheel[channel].value_step = EXPR_STEP * semitones * 0x1000
+          / ( (ncd_pitch_wheel[channel].left_duration = node->events[i].duration)
+              * conv_unit );
       } else {
-        status = msg[MIDI_STATUS] & 0xF0;
-		if (status == MIDI_NOTEON) {
+	if (status == MIDI_NOTEON) {
           msg[MIDI_DATA2] = RANDOMIZE(msg[MIDI_DATA2]);
         }
         if (channel != DRUMCHANNEL
              && (status == MIDI_NOTEON  || status == MIDI_NOTEOFF)) {
           msg[MIDI_DATA1] += ncd_trans_semitones;
-	    }
+        }
         NCD_MIDI_EVENT(msg);
       }
     }
@@ -388,7 +449,7 @@ void ncd_play() {
 }
 
 // the human player will play notes tagged with tag
-// Note: it does not support dynamics (crescendo/diminuendo)
+// Note: it does support neither dynamics (crescendo/diminuendo) nor slides
 void ncd_auto_accompaniment(char tag) {
   ncd_node *node;
   ncd_midi_event *note;
@@ -595,3 +656,17 @@ void ncd_stop_hairpin(unsigned char channel, float last_note_dur) {
 
   hp->ev_ref.node = NULL; // There is no more a hairpin to end.
 }
+
+void ncd_slide(signed char semitones, unsigned char channel, float next_note_dur) {
+  ncd_event ev;
+  
+  // Queue up a MIDI pitch wheel event (non-standard but it works):
+  ev.msg[MIDI_STATUS] = MIDI_PITCH_WHEEL | channel;
+  ev.msg[MIDI_DATA1] = semitones;
+  ev.msg[MIDI_DATA2] = 0;
+  ev.tag = ' ';
+  ev.duration = next_note_dur;
+  
+  ncd_queue_push_event(ev);
+}
+
