@@ -35,12 +35,18 @@
 #include "parser.h"
 #include "timer.h"
 
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+
 // Default number of beats per minute. Each beat is a quarter note.
 #define DEFBPM 60
 
+// Define duration of the pitch wheel ascending slope
+#define PITCH_WHEEL_DUR 150000 // in us
+
 // Each expression volume increment/decrement or pitch wheel change
-// will be done in this time interval (in us)
-#define EXPR_STEP 100000 // 100000 us = 0.1s
+// will be done in this time interval (in us). Must be a fraction
+// of PITCH_WHEEL_DUR
+#define EXPR_STEP 1500 // e.g. 100000 us = 0.1s
 
 static struct {
   ncd_node *start;
@@ -424,14 +430,22 @@ void ncd_play() {
 
         ncd_pitch_wheel[channel].current = NOBENDING;
 
-        /* From proportion:
+	/* Change pitch linearly for
+             slope_duration = min(PITCH_WHEEL_DUR,node->events[i].duration)
+	   us and if time is left (note is longer than that), keep it
+	   constant. The descending slope due to the pitch wheel
+	   spring is not implemented. This it is usually faster than a
+           single EXPR_STEP.
 
-            semitones * 0x1000      value_step
-          ---------------------- = ------------
-           duration * conv_unit     EXPR_STEP
+           From proportion:
+
+            semitones * 0x1000           value_step
+          --------------------------- = ------------
+           slope_duration * conv_unit     EXPR_STEP
         */
         ncd_pitch_wheel[channel].value_step = EXPR_STEP * semitones * 0x1000
-          / ( (ncd_pitch_wheel[channel].left_duration = node->events[i].duration)
+          / ( (ncd_pitch_wheel[channel].left_duration =
+                 min(PITCH_WHEEL_DUR / conv_unit, node->events[i].duration))
               * conv_unit );
       } else {
 	if (status == MIDI_NOTEON) {

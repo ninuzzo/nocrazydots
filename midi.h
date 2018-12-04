@@ -126,7 +126,7 @@ int ncd_midi_event_size(ncd_midi_event e);
       printf("ch   %4hhu  vol %3hhu\n", \
         ((e)[MIDI_STATUS] & 0x0F) + 1, (e)[MIDI_DATA2] & 0x7F); \
     } else if (((e)[MIDI_STATUS] & 0xF0) == MIDI_PITCH_WHEEL) { \
-      printf("val  0x%4X\n", (e)[MIDI_DATA1] | (e)[MIDI_DATA2] << 7); \
+      printf("val  0x%04X\n", (e)[MIDI_DATA1] | (e)[MIDI_DATA2] << 7); \
     } else { \
       printf("note %2hhu%s  vel %3hhu\n", \
             MIDI_OCTAVE((e)[MIDI_DATA1]), \
