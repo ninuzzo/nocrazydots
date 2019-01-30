@@ -4,7 +4,7 @@
    without crazy dots.
    Supports automated playing and auto-accompainment.
 
-   (c) 2017-2018 Antonio Bonifati aka Farmboy
+   (c) 2017-2019 Antonio Bonifati aka Farmboy
    <http://farmboymusicblog.wordpress.com>>
 
    This file is part of NoCrazyDots.
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
   bool dump_mode = false;
   struct sched_param sp;
 
-  printf("NoCrazyDots %.1f (c) 2017-2018 Antonio Bonifati \"Farmboy\" under GNU GPL3\n",
+  printf("NoCrazyDots %.1f (c) 2017-2019 Antonio Bonifati \"Farmboy\" under GNU GPL3\n",
     VERSION);
 
   // Argument parsing without option-switches. Ambiguous, but in rare cases...

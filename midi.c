@@ -4,7 +4,7 @@
    without crazy dots.
    Supports automated playing and auto-accompainment.
 
-   (c) 2017-2018 Antonio Bonifati aka Farmboy
+   (c) 2017-2019 Antonio Bonifati aka Farmboy
    <http://farmboymusicblog.wordpress.com>
 
    This file is part of NoCrazyDots.
