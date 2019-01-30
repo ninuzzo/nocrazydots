@@ -19,6 +19,20 @@ float ncd_time_elapsed = 0;
 // 5ms (5000us) latency is the smallest a human being can detect.
 #define LATENCY_WARN_THRESHOLD 5000 // In us
 
+/* Latency correction addend. Needed because the latency correction
+   algorithm below (see macro CHRONOSLEEP) introduces some latency too.
+   Best value must be found by experiment. Faster computers will require
+   smaller value. Record a long piece and compare effective with
+   theoretical length. If the former is significantly higher, try to
+   increment this value until they match. I advice to make use of the
+   binary search algorithm to find out a sufficient approximation
+   of the right correction with the least number of tries.
+   Must be less than LATENCY_WARN_THRESHOLD to make sense. */
+#define LATENCY_CORRECTION 2.75 // In us
+
+// Estimate of latency piled up so far.
+float ncd_latency = 0;
+
 #define MICROSEC(s) (s.tv_sec * 1000000 + s.tv_usec)
 #define STOPWATCH_RESET() (ncd_timer_start = ncd_timer_stop = (struct timeval){0}, ncd_time_elapsed = 0)
 #define STOPWATCH_START() gettimeofday(&ncd_timer_start, NULL)
@@ -28,7 +42,7 @@ float ncd_time_elapsed = 0;
 #define CHRONOSLEEP(us) { \
   float drift, wait_time; \
   STOPWATCH_STOP(); \
-  drift = STOPWATCH_READ() - ncd_time_elapsed; \
+  drift = STOPWATCH_READ() - ncd_time_elapsed + (ncd_latency += LATENCY_CORRECTION); \
   if (drift > LATENCY_WARN_THRESHOLD) { \
     fprintf(stderr, "Warning: %d us latency\n", (int)drift); \
   } \
