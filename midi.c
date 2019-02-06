@@ -95,6 +95,7 @@ struct voice_data {
 };
 
 struct hsearch_data ncd_midi_voice_table, ncd_midi_drum_table;
+bool ncd_midi_drumkit_not_loaded = true;
 
 // Beware, this changes s (side effect).
 char *lowercase(char *s) {
@@ -268,8 +269,9 @@ void ncd_midi_set_voice(const char *voice, unsigned char channel,
   
   // We assume you can only use one drumkit per score
   // and so we load it only once before playing
-  if (queue && (channel == DRUMCHANNEL)) {
+  if (ncd_midi_drumkit_not_loaded && queue && (channel == DRUMCHANNEL)) {
     ncd_midi_load_drumkit(lv);
+    ncd_midi_drumkit_not_loaded = false;
   }
 }
 
