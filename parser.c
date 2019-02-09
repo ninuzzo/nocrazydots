@@ -5,7 +5,7 @@
    Supports automated playing and auto-accompainment.
 
    (c) 2017-2019 Antonio Bonifati aka Farmboy
-   <http://farmboymusicblog.wordpress.com>>
+   <http://farmboymusicblog.wordpress.com>
 
    This file is part of NoCrazyDots.
 

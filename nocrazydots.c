@@ -5,7 +5,7 @@
    Supports automated playing and auto-accompainment.
 
    (c) 2017-2019 Antonio Bonifati aka Farmboy
-   <http://farmboymusicblog.wordpress.com>>
+   <http://farmboymusicblog.wordpress.com>
 
    This file is part of NoCrazyDots.
 
@@ -22,7 +22,14 @@
    You should have received a copy of the GNU General Public License
    along with NoCrazyDots.  If not, see <http://www.gnu.org/licenses/>.
 */
-#define VERSION 1.0
+#define VERSION 1.1
+
+// Seconds to wait for MIDI recording to finish
+#define WAITMIDI 1
+
+// Including the null byte used to end the command string
+#define MAXCMDLEN 255
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -31,6 +38,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <sched.h>
+#include <signal.h>
 #include "parser.h"
 #include "midi.h"
 #include "queue.h"
@@ -38,9 +46,14 @@
 
 char *ncd_pname;
 
+const char *filename_ext(const char *filename) {
+  const char *dot = strrchr(filename, '.');
+  if (!dot || dot == filename) return "";
+  return dot + 1;
+}
+
 int main(int argc, char *argv[]) {
-  char *datadir = MIDIDATADIR, tag = ' ',
-    last;
+  char *datadir = MIDIDATADIR, tag = ' ', last, *midifile = NULL;
   FILE *fp = stdin;
   bool dump_mode = false;
   struct sched_param sp;
@@ -52,7 +65,7 @@ int main(int argc, char *argv[]) {
   ncd_pname = basename(argv[0]);
   while (*++argv) {
     last = (*argv)[strlen(*argv) - 1];
-    if (strncmp(*argv, "hw:", 3) == 0) {
+    if (strncmp(*argv, "hw:", 3) == 0 || STREQ(*argv, virtual)) {
       strncpy(ncd_midi_port_name, *argv, DEVMAXLEN - 1);
     } else if (strlen(*argv) == 1) {
       tag = (*argv)[0];
@@ -64,6 +77,10 @@ int main(int argc, char *argv[]) {
       ncd_trans_semitones = atoi(*argv);
     } else if (last == '/') {
       datadir = *argv;
+    } else if (STREQ(filename_ext(*argv), mid)) {
+      // MIDI file generation implies outputting on a virtual MIDI port
+      strcpy(ncd_midi_port_name, "virtual");
+      midifile = *argv;
     } else {
       error_if((fp = fopen(*argv, "r")) == NULL);
     }
@@ -89,7 +106,32 @@ int main(int argc, char *argv[]) {
     #endif
 
     if (tag == ' ') {
-      ncd_play();
+      if (midifile) {
+        pid_t recpid;
+        
+        if ((recpid = fork()) == 0) {
+          char reccmd[MAXCMDLEN];
+          snprintf(reccmd, sizeof(reccmd),
+            "arecordmidi -p $(arecordmidi -l | sed -n '$s/ .*//p') \"%s\"",
+            midifile);
+
+          // Child process
+          error_if(execl("/bin/sh", "sh", "-c", reccmd, (char *) 0) == -1);
+        }
+
+        // To be practically sure the first notes have been recorded
+        sleep(WAITMIDI);
+
+        // Parent process
+        ncd_play();
+
+        // To be practically sure the last notes have been recorded
+        sleep(WAITMIDI);
+
+        kill(recpid, SIGINT); // Stop MIDI recorder
+      } else {  
+        ncd_play();
+      }
     } else {
       ncd_auto_accompaniment(tag);
     }

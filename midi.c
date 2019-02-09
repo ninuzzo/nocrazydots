@@ -513,7 +513,7 @@ void ncd_midi_detect_keyboard_device() {
   int card = -1, // get the first card in the list of sound cards
     dev;
   snd_rawmidi_info_t *info;
-  char devname[32];
+  char devname[DEVMAXLEN];
   const char *name;
 
   CHK(snd_card_next(&card));
@@ -525,7 +525,7 @@ void ncd_midi_detect_keyboard_device() {
   do {
     // find out if this card has a MIDI device
     // that can handle both input and output
-    snprintf(devname, DEVMAXLEN, "hw:%d", card);
+    snprintf(devname, sizeof(devname), "hw:%d", card);
     CHK(snd_ctl_open(&ctl, devname, 0));
     dev = -1; // get the first device number for this card
     // for all devices on this card
@@ -535,7 +535,8 @@ void ncd_midi_detect_keyboard_device() {
 	    snd_ctl_rawmidi_info(ctl, info);
         name = snd_rawmidi_info_get_name(info);
         if (strcasestr(name, "keyboard")) {
-          snprintf(ncd_midi_port_name, DEVMAXLEN, "hw:%d,%d,0", card, dev);
+          snprintf(ncd_midi_port_name, sizeof(ncd_midi_port_name),
+            "hw:%d,%d,0", card, dev);
           return;
         }
       } else {

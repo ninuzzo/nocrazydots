@@ -66,6 +66,16 @@ If you run nocrazydots without arguments, you can write a one-off score on stdin
 ending with the end-of-file character (ctrl-d). This is useful to try out a
 piece of a larger score you copy and paste and/or for testing/learning purposes.
 
+By adding a second file argument with a .mid extension, instead of playing
+the score through a synth, you can generate a MIDI file. E.g.:
+
+```bash
+$ nocrazydots /usr/share/nocrazydots/sample_scores/twinkle.txt twinkle.mid
+```
+
+Please wait for all the duration of the piece for complete MIDI generation,
+although you can not hear anything.
+
 Reading and writing NoCrazyDots scores is simpler than the traditional notation.
 Just look at the sample_scores dir and you will understand anything by yourself.
 
@@ -142,4 +152,7 @@ $ sudo gpasswd -a YOUR_USERNAME GROUP
 
 Then logout of your user and login again to make this effective, or
 just reboot and try to run nocrazydots again.
+
+If your computer is old and slow, it is advisable to not do anything else with it
+while nocrazydots is playing complicated scores, in order to not introduce latency.
 
