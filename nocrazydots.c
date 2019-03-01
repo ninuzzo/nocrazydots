@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Try to run in real-time context to reduce latency.
-  sp.sched_priority = 99;
+  sp.sched_priority = 98;
   if (sched_setscheduler(getpid(), SCHED_FIFO, &sp) == -1) {
     warning(0, "warning: cannot gain realtime privileges. See README.md");
   }

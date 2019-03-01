@@ -137,14 +137,16 @@ whether such a group exists with this command:
 
 ```bash
 $ grep -ri rtprio /etc/security
-/etc/security/limits.d/99-audio.conf:@audio 	- rtprio 	99
+/etc/security/limits.d/99-realtime-privileges.conf:@realtime - rtprio 98
 /etc/security/limits.conf:#        - rtprio - max realtime priority
 ```
 
-e.g. in this case you see the name of the group is audio. Else it must
+e.g. in this case you see the name of the group is realtime. Else it must
 be created and defined similarly, e.g. directly in /etc/security/limits.conf
+In Arch Linux, which BTW is my Linux Distro of choice, you just have to install
+the realtime-privileges package, which will create the realtime group for you.
 
-You can add your user to this group with this command:
+You can then add your user to this group with this command:
 
 ```bash
 $ sudo gpasswd -a YOUR_USERNAME GROUP

@@ -1,0 +1,16 @@
+#Effect Name,Effect Acronym, MIDI Note#
+Bass Drum Soft L,bds,33
+Gran Cassa,gc,35
+Gran Cassa Mute,gcm,36
+Band Snare,bs,38
+Band Snare 2,bs2,40
+Tom Jazz 1,tj1,41
+Tom Jazz 2,tj2,43
+Tom Jazz 3,tj3,45
+Tom Jazz 4,tj4,47
+Tom Jazz 5,tj5,48
+Hand Cymbal,hc,49
+Tom Jazz 6,tj6,50
+Hand Cymbal Short,hcs,51
+Hand Cymbal 2,hc2,57
+Hand Cymbal Short,hcs2,59
