@@ -3,14 +3,14 @@ Bass Drum Soft L,bds,33
 Gran Cassa,gc,35
 Gran Cassa Mute,gcm,36
 Band Snare,bs,38
-Band Snare 2,bs2,40
-Tom Jazz 1,tj1,41
-Tom Jazz 2,tj2,43
-Tom Jazz 3,tj3,45
-Tom Jazz 4,tj4,47
-Tom Jazz 5,tj5,48
+Band Snare 2,2bs,40
+Tom Jazz 1,1tj,41
+Tom Jazz 2,2tj,43
+Tom Jazz 3,3tj,45
+Tom Jazz 4,4tj,47
+Tom Jazz 5,5tj,48
 Hand Cymbal,hc,49
-Tom Jazz 6,tj6,50
+Tom Jazz 6,6tj,50
 Hand Cymbal Short,hcs,51
-Hand Cymbal 2,hc2,57
-Hand Cymbal Short,hcs2,59
+Hand Cymbal 2,2hc,57
+Hand Cymbal Short,2hcs,59
