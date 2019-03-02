@@ -58,6 +58,7 @@ Fat Lo Bass,0,119,39
 Bleep Bass,0,122,40
 Funk Bass,0,121,40
 Synth Bass,0,112,39
+Hi-Q Bass,0,113,39
 Dance Bass,0,113,40
 Strings,0,112,49
 Chamber Strings,0,112,50
