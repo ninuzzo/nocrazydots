@@ -139,6 +139,7 @@
 #define DOT '.'
 #define SEP '_' // note name - duration/velocity separator (sometimes optional)
 #define PER 'x'
+#define COMMA ','
 #define CRESCENDO '<'
 #define DIMINUENDO '>'
 #define HAIRPIN_END '='
@@ -196,36 +197,48 @@ void parse_directives(FILE *fp) {
       ncd_midi_set_tempo(bpm);
     } else if (STREQ2(id, r, rec) || STREQ2(id, s, stop)
         || STREQ2(id, p, play)) { // pattern recording and playback
-      SKIPBLANKS();
-      error_check(!isdigit(c), ncd_parser_line_no,
-        "Section recording directive needs a section number, found `%c'", c);
-      READNUM(hhu, section);
-      // section numbers start at 1, but internally are 0-based
-      --section;
-      switch (id[0]) {
-        case 'r':
-          ncd_section_rec(section);
-        break;
+      do {
+        SKIPBLANKS();
+        error_check(!isdigit(c), ncd_parser_line_no,
+          "Section recording directive needs a section number, found `%c'", c);
+        READNUM(hhu, section);
+        // section numbers start at 1, but internally are 0-based
+        --section;
+        switch (id[0]) {
+          case 'r':
+            ncd_section_rec(section);
+          break;
+
+          case 's':
+            ncd_section_stop(section);
+          break;
         
-        case 's':
-          ncd_section_stop(section);
-        break;
-        
-        default:
+          default:
+            SKIPBLANKS();
+            if (c == PER) {
+              ADVANCE();
+            }
+            if (isdigit(c)) {
+              READNUM(hhu, repeats);
+            } else {
+              repeats = 1;
+            }
+            for (i = 0; i < repeats; i++) {
+              ncd_section_play(section);
+            }
+          break;
+        }    
+        if (! STREQ2(id, r, rec)) {
           SKIPBLANKS();
-          if (c == PER) {
+          if (c == COMMA) {
             ADVANCE();
-          }
-          if (isdigit(c)) {
-            READNUM(hhu, repeats);
           } else {
-            repeats = 1;
+            break;
           }
-          for (i = 0; i < repeats; i++) {
-            ncd_section_play(section);
-          }
-        break;
-      }    
+        } else {
+          break;
+        }
+      } while (true);
     } else {
       READCHANNEL(channel);
       SKIPBLANKS();
