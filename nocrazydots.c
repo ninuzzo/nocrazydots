@@ -65,11 +65,11 @@ int main(int argc, char *argv[]) {
   ncd_pname = basename(argv[0]);
   while (*++argv) {
     last = (*argv)[strlen(*argv) - 1];
-    if (strncmp(*argv, "hw:", 3) == 0 || STREQ(*argv, virtual)) {
+    if (strncmp(*argv, "hw:", 3) == 0 || STREQ(*argv, "virtual")) {
       strncpy(ncd_midi_port_name, *argv, DEVMAXLEN - 1);
     } else if (strlen(*argv) == 1) {
       tag = (*argv)[0];
-    } else if (STREQ2(*argv, -dump, -d)) {
+    } else if (STREQ2(*argv, "-dump", "-d")) {
       dump_mode = true;
     } else if (last == '%') {
       ncd_percent_randomness = atoi(*argv);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
       ncd_trans_semitones = atoi(*argv);
     } else if (last == '/') {
       datadir = *argv;
-    } else if (STREQ(filename_ext(*argv), mid)) {
+    } else if (STREQ(filename_ext(*argv), "mid")) {
       // MIDI file generation implies outputting on a virtual MIDI port
       strcpy(ncd_midi_port_name, "virtual");
       midifile = *argv;

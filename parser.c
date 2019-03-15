@@ -31,6 +31,20 @@
 #include "midi.h"
 #include "queue.h"
 
+#define BAR '|'
+#define BEAT ':' // optional beat separator 
+#define TIE '^'
+#define QUOTE '"'
+#define DOT '.'
+#define SEP '_' // note name - duration/velocity separator (sometimes optional)
+#define PER 'x'
+#define COMMA ','
+#define CRESCENDO '<'
+#define DIMINUENDO '>'
+#define HAIRPIN_END '='
+#define SLIDE '\\'
+#define HASH '#'
+
 // Default starting note for relative pitch numbers.
 // MIDI_NOTE(5, 0) is central do (central C)
 #define DEFNOTE MIDI_NOTE(5, 0)
@@ -59,7 +73,7 @@
 #define READID() { \
   id[i = 0] = c; \
   NEXTC(); \
-  while (isalpha(c)) { \
+  while (isalpha(c) || c == HASH) { \
     error_check(++i == MAXIDLEN, ncd_parser_line_no, "Identifier too long"); \
     id[i] = c; \
     NEXTC(); \
@@ -69,40 +83,40 @@
 }
 
 #define PARSENOTE() { \
-  if (STREQ(id, do)) { /* absolute note names */ \
+  if (STREQ2(id, "do", "C")) { /* absolute note names */ \
     note_no = 0; \
     is_note = true; \
-  } else if (STREQ2(id, di, ra)) { \
+  } else if (STREQ4(id, "di", "ra", "C#", "Db")) { \
     note_no = 1; \
     is_note = true; \
-  } else if (STREQ(id, re)) { \
+  } else if (STREQ2(id, "re", "D")) { \
     note_no = 2; \
     is_note = true; \
-  } else if (STREQ2(id, ri, me)) { \
+  } else if (STREQ4(id, "ri", "me", "D#", "Eb")) { \
     note_no = 3; \
     is_note = true; \
-  } else if (STREQ2(id, mi, fe)) { \
+  } else if (STREQ4(id, "mi", "fe", "E", "Fb")) { \
     note_no = 4; \
     is_note = true; \
-  } else if (STREQ(id, fa)) { \
+  } else if (STREQ4(id, "fa", "ma", "F", "E#")) { \
     note_no = 5; \
     is_note = true; \
-  } else if (STREQ2(id, fi, se)) { \
+  } else if (STREQ4(id, "fi", "se", "F#", "Gb")) { \
     note_no = 6; \
     is_note = true; \
-  } else if (STREQ2(id, so, sol)) { \
+  } else if (STREQ3(id, "so", "sol", "G")) { \
     note_no = 7; \
     is_note = true; \
-  } else if (STREQ2(id, si, le)) { \
+  } else if (STREQ4(id, "si", "le", "G#", "Ab")) { \
     note_no = 8; \
     is_note = true; \
-  } else if (STREQ(id, la)) { \
+  } else if (STREQ2(id, "la", "A")) { \
     note_no = 9; \
     is_note = true; \
-  } else if (STREQ2(id, li, te)) { \
+  } else if (STREQ4(id, "li", "te", "A#", "Bb")) { \
     note_no = 10; \
     is_note = true; \
-  } else if (STREQ2(id, ti, de)) { \
+  } else if (STREQ4(id, "ti", "de", "B", "Cb")) { \
     note_no = 11; \
     is_note = true; \
   } \
@@ -132,18 +146,6 @@
 }
 
 #define ADVANCE() { NEXTC(); SKIPBLANKS(); }
-#define BAR '|'
-#define BEAT ':' // optional beat separator 
-#define TIE '^'
-#define QUOTE '"'
-#define DOT '.'
-#define SEP '_' // note name - duration/velocity separator (sometimes optional)
-#define PER 'x'
-#define COMMA ','
-#define CRESCENDO '<'
-#define DIMINUENDO '>'
-#define HAIRPIN_END '='
-#define SLIDE '\\'
 
 const char *midi_note_no_name[12] = {
   "do", "di", "re", "ri", "mi", "fa", "fi", "so", "si", "la", "li", "ti"
@@ -192,11 +194,11 @@ void parse_directives(FILE *fp) {
     }
     id[i+1] = '\0';
 
-    if (STREQ(id, bpm)) {
+    if (STREQ(id, "bpm")) {
       READNUM(hhu, bpm);
       ncd_midi_set_tempo(bpm);
-    } else if (STREQ2(id, r, rec) || STREQ2(id, s, stop)
-        || STREQ2(id, p, play)) { // pattern recording and playback
+    } else if (STREQ2(id, "r", "rec") || STREQ2(id, "s", "stop")
+        || STREQ2(id, "p", "play")) { // pattern recording and playback
       do {
         SKIPBLANKS();
         error_check(!isdigit(c), ncd_parser_line_no,
@@ -228,7 +230,7 @@ void parse_directives(FILE *fp) {
             }
           break;
         }    
-        if (! STREQ2(id, r, rec)) {
+        if (! STREQ2(id, "r", "rec")) {
           SKIPBLANKS();
           if (c == COMMA) {
             ADVANCE();
@@ -268,7 +270,7 @@ void parse_note(FILE *fp) {
   int
     denom, // denominator of a duration fraction
     dots_power; // power of two to compute dotted notes duration
-  char drum_id[MAXIDLEN];
+  char drum_id[MAXIDLEN + 2];
   float num;
   register int i;
 
@@ -297,7 +299,7 @@ void parse_note(FILE *fp) {
   if (id_read) {
     if (channel != DRUMCHANNEL) {
       PARSENOTE();
-      
+
       if (is_note) {
         if (num_read) {
           // num is thus an octave number
@@ -343,7 +345,7 @@ void parse_note(FILE *fp) {
         // num could be a drum effect number
         drum_id[0] = num + '0';
         drum_id[1] = '\0';
-        strncat(drum_id, id, MAXIDLEN-2);
+        strncat(drum_id, id, MAXIDLEN+1);
         num_read = false;
       } else {
         strcpy(drum_id, id);
@@ -417,25 +419,25 @@ void parse_note(FILE *fp) {
       }
   
       if (id_read) {
-        if (STREQ(id, pppp)) {
+        if (STREQ(id, "pppp")) {
           velocity = PPPP;
-        } else if (STREQ(id, ppp)) {
+        } else if (STREQ(id, "ppp")) {
           velocity = PPP;
-        } else if (STREQ(id, pp)) {
+        } else if (STREQ(id, "pp")) {
           velocity = PP;            
-        } else if (STREQ(id, p)) {
+        } else if (STREQ(id, "p")) {
           velocity = P;            
-        } else if (STREQ(id, mp)) {
+        } else if (STREQ(id, "mp")) {
           velocity = MP;            
-        } else if (STREQ(id, mf)) {
+        } else if (STREQ(id, "mf")) {
           velocity = MF;            
-        } else if (STREQ(id, f)) {
+        } else if (STREQ(id, "f")) {
           velocity = F;            
-        } else if (STREQ(id, ff)) {
+        } else if (STREQ(id, "ff")) {
           velocity = FF;            
-        } else if (STREQ(id, fff)) {
+        } else if (STREQ(id, "fff")) {
           velocity = FFF;            
-        } else if (STREQ(id, ffff)) {
+        } else if (STREQ(id, "ffff")) {
           velocity = FFFF;            
         } else {
           trigger_error(ncd_parser_line_no,
