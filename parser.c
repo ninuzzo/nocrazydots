@@ -83,7 +83,7 @@
 }
 
 #define PARSENOTE() { \
-  if (STREQ2(id, "do", "C")) { /* absolute note names */ \
+  if (STREQ3(id, "do", "ta", "C")) { /* absolute note names */ \
     note_no = 0; \
     is_note = true; \
   } else if (STREQ4(id, "di", "ra", "C#", "Db")) { \
