@@ -60,7 +60,7 @@
 #define SKIPBLANKS() while (isblank(c)) NEXTC()
 
 // Skip note-component separator or note-span indicator at the end of note
-#define SKIPSEP() while (c == SEP) NEXTC()
+#define SKIPSEP() while (c == SEP) { NEXTC(); if (c == BAR || c == BEAT) NEXTC(); }
 
 // this must be called when you are sure c contains a digit
 #define READNUM(type, var) { \

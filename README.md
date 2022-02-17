@@ -76,6 +76,12 @@ $ nocrazydots /usr/share/nocrazydots/sample_scores/twinkle.txt twinkle.mid
 Please wait for all the duration of the piece for complete MIDI generation,
 although you can not hear anything.
 
+After that the MIDI file can also be converted into a WAV by using a soft synth, e.g.:
+
+```bash
+$ timidity -Ow --output-mono twinkle.mid -o twinkle.wav
+```
+
 Reading and writing NoCrazyDots scores is simpler than the traditional notation.
 Just look at the sample_scores dir and you will understand anything by yourself.
 
